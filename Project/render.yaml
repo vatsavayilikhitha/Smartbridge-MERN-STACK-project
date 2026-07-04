@@ -1,0 +1,29 @@
+# ============================================================
+# Render Infrastructure Blueprint Configuration (render.yaml)
+# ============================================================
+# Connect your GitHub repository to Render (https://dashboard.render.com)
+# Render will automatically parse this blueprint configuration.
+# ============================================================
+
+services:
+  - type: web
+    name: shopez-e-commerce
+    env: node
+    plan: free
+    rootDir: Project
+    buildCommand: cd client && npm install --include=dev && npm run build && cd ../server && npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 20.15.0
+      - key: PORT
+        value: 5000
+      - key: MONGO_URI
+        sync: false
+        # Place your real MongoDB Atlas connection string in the Render dashboard when prompted
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRE
+        value: 30d
